@@ -12,21 +12,33 @@ import ca.mcgill.ecse321.eventregistration.persistence.PersistenceXStream;
 public class EventRegistrationController {
 	
 
-	public void createParticipant(String name) {
+	public void createParticipant(String name) throws InvalidInputException{
+		
+		//checking for invalid input
+		if(name == null || name.isEmpty() || name.trim().isEmpty()) {
+			throw new InvalidInputException("Participant name cannot be empty.");
+		}
+		
 		Participant p = new Participant(name);	//create participant
 		RegistrationManager rm = RegistrationManager.getInstance();	//get registration manager
 		rm.addParticipant(p);	//add it to registration manager
 		PersistenceXStream.saveToXMLwithXStream(rm);	//write persistently to file
 	}
 
-	public void createEvent(String name, Date eventDate, Time startTime, Time endTime) {
+	public void createEvent(String name, Date eventDate, Time startTime, Time endTime) throws InvalidInputException {
+		
+		// checking for invalid input
+		if (name == null || name.isEmpty() || name.trim().isEmpty()) {
+			throw new InvalidInputException("Event name cannot be empty.");
+		}
+		
 		Event e = new Event(name, eventDate, startTime, endTime);	//create participant
 		RegistrationManager rm = RegistrationManager.getInstance();	//get registration manager
 		rm.addEvent(e);	//add event to registration manager
 		PersistenceXStream.saveToXMLwithXStream(rm);	//write persistently to file
 	}
 
-	public void createRegistration(Participant p, Event e) {
+	public void createRegistration(Participant p, Event e) throws InvalidInputException {
 		Registration reg = new Registration(p, e);	//create participant
 		RegistrationManager rm = RegistrationManager.getInstance();	//get registration manager
 		rm.addRegistration(reg);	//add it to registration manager

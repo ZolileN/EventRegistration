@@ -41,7 +41,11 @@ public class TestEventRegistrationController {
 		String name = "Kevin";
 		
 		EventRegistrationController erc = new EventRegistrationController();
-		erc.createParticipant(name);
+		try {
+			erc.createParticipant(name);
+		} catch (InvalidInputException e) {
+			fail(e.getMessage());
+		}
 		
 		checkResultParticipant(name, rm);
 		
@@ -64,7 +68,11 @@ public class TestEventRegistrationController {
 		Time endTime = new Time(c.getTimeInMillis());
 		
 		EventRegistrationController erc = new EventRegistrationController();
-		erc.createEvent(name, eventDate, startTime, endTime);
+		try {
+			erc.createEvent(name, eventDate, startTime, endTime);
+		} catch (InvalidInputException e) {
+			fail(e.getMessage());
+		}
 		
 		checkResultEvent(name, eventDate, startTime, endTime, rm);
 		
@@ -91,15 +99,175 @@ public class TestEventRegistrationController {
 		Participant p = new Participant("Kevin");
 		
 		EventRegistrationController erc = new EventRegistrationController();
-		erc.createEvent(e.getName(), e.getDate(), e.getStartTime(), e.getEndTime());
-		erc.createParticipant(p.getName());
-		erc.createRegistration(p, e);
+		try {
+			erc.createEvent(e.getName(), e.getDate(), e.getStartTime(), e.getEndTime());
+			erc.createParticipant(p.getName());
+			erc.createRegistration(p, e);
+		} catch (InvalidInputException ex) {
+			fail(ex.getMessage());
+		}
 		
 		checkResultRegistration(p, e, rm);
 		
 		RegistrationManager rm2 = (RegistrationManager) PersistenceXStream.loadFromXMLwithXStream();
 		
 		checkResultRegistration(p, e, rm2);
+	}
+	
+	@Test
+	public void testCreateParticipantNull() {
+		//initialize registration manager, assert that it is emty
+		RegistrationManager rm = RegistrationManager.getInstance();
+		assertEquals(0, rm.getParticipants().size());
+		
+		String name = null;
+		String error = null;
+		
+		//create participant with name null
+		EventRegistrationController erc = new EventRegistrationController();
+		try {
+			erc.createParticipant(name);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		//check error message
+		assertEquals("Participant name cannot be empty.", error);
+		//check participant wasn't added
+		assertEquals(0, rm.getParticipants().size());
+	}
+	
+	@Test
+	public void testCreateParticipantEmpty() {
+		// initialize registration manager, assert that it is empty
+		RegistrationManager rm = RegistrationManager.getInstance();
+		assertEquals(0, rm.getParticipants().size());
+
+		String name = "";
+		String error = null;
+
+		// create participant with empty name
+		EventRegistrationController erc = new EventRegistrationController();
+		try {
+			erc.createParticipant(name);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+
+		// check error message
+		assertEquals("Participant name cannot be empty.", error);
+		// check participant wasn't added
+		assertEquals(0, rm.getParticipants().size());
+	}
+	
+	@Test
+	public void testCreateParticipantSpaces() {
+		// initialize registration manager, assert that it is empty
+		RegistrationManager rm = RegistrationManager.getInstance();
+		assertEquals(0, rm.getParticipants().size());
+
+		String name = " ";
+		String error = null;
+
+		// create participant with empty (space) name
+		EventRegistrationController erc = new EventRegistrationController();
+		try {
+			erc.createParticipant(name);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+
+		// check error message
+		assertEquals("Participant name cannot be empty.", error);
+		// check participant wasn't added
+		assertEquals(0, rm.getParticipants().size());
+	}
+	
+	@Test
+	public void testCreateEventNull() {
+		//initialize registration manager, assert that it is emty
+		RegistrationManager rm = RegistrationManager.getInstance();
+		assertEquals(0, rm.getEvents().size());
+		
+		String name = null;
+		String error = null;
+		Calendar c = Calendar.getInstance();
+		c.set(2016, Calendar.SEPTEMBER, 15, 8, 30, 0);
+		Date eventDate = new Date(c.getTimeInMillis());
+		Time startTime = new Time(c.getTimeInMillis());
+		c.set(2016, Calendar.SEPTEMBER, 15, 10, 0, 0);
+		Time endTime = new Time(c.getTimeInMillis());
+		
+		//create event with name null
+		EventRegistrationController erc = new EventRegistrationController();
+		try {
+			erc.createEvent(name, eventDate, startTime, endTime);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		//check error message
+		assertEquals("Event name cannot be empty.", error);
+		//check event wasn't added
+		assertEquals(0, rm.getEvents().size());
+	}
+	
+	@Test
+	public void testCreateEventEmpty() {
+		// initialize registration manager, assert that it is empty
+		RegistrationManager rm = RegistrationManager.getInstance();
+		assertEquals(0, rm.getEvents().size());
+
+		String name = "";
+		String error = null;
+		Calendar c = Calendar.getInstance();
+		c.set(2016, Calendar.SEPTEMBER, 15, 8, 30, 0);
+		Date eventDate = new Date(c.getTimeInMillis());
+		Time startTime = new Time(c.getTimeInMillis());
+		c.set(2016, Calendar.SEPTEMBER, 15, 10, 0, 0);
+		Time endTime = new Time(c.getTimeInMillis());
+
+		// create event with empty name
+		EventRegistrationController erc = new EventRegistrationController();
+		try {
+			erc.createEvent(name, eventDate, startTime, endTime);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+
+		// check error message
+		assertEquals("Event name cannot be empty.", error);
+		// check event wasn't added
+		assertEquals(0, rm.getEvents().size());
+	}
+	
+	@Test
+	public void testCreateEventSpaces() {
+		// initialize registration manager, assert that it is empty
+		RegistrationManager rm = RegistrationManager.getInstance();
+		assertEquals(0, rm.getEvents().size());
+
+		String name = " ";
+		String error = null;
+		Calendar c = Calendar.getInstance();
+		c.set(2016, Calendar.SEPTEMBER, 15, 8, 30, 0);
+		Date eventDate = new Date(c.getTimeInMillis());
+		Time startTime = new Time(c.getTimeInMillis());
+		c.set(2016, Calendar.SEPTEMBER, 15, 10, 0, 0);
+		Time endTime = new Time(c.getTimeInMillis());
+
+		// create event with empty (space) name
+		EventRegistrationController erc = new EventRegistrationController();
+		try {
+			erc.createEvent(name, eventDate, startTime, endTime);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+
+		// check error message
+		assertEquals("Event name cannot be empty.", error);
+		// check event wasn't added
+		assertEquals(0, rm.getEvents().size());
 	}
 	
 	private void checkResultRegistration(Participant p, Event e, RegistrationManager rm) {
