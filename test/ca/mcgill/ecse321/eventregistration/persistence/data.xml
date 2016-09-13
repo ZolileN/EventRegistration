@@ -2,7 +2,7 @@
   <events id="2">
     <event id="3">
       <name>Concert</name>
-      <date id="4">2016-09-15</date>
+      <eventDate id="4">2016-09-15</eventDate>
       <startTime id="5">08:30:00</startTime>
       <endTime id="6">10:00:00</endTime>
     </event>

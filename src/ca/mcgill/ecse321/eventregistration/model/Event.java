@@ -15,7 +15,7 @@ public class Event
 
   //Event Attributes
   private String name;
-  private Date date;
+  private Date eventDate;
   private Time startTime;
   private Time endTime;
 
@@ -26,7 +26,7 @@ public class Event
   public Event(String aName, Date aDate, Time aStartTime, Time aEndTime)
   {
     name = aName;
-    date = aDate;
+    eventDate = aDate;
     startTime = aStartTime;
     endTime = aEndTime;
   }
@@ -46,7 +46,7 @@ public class Event
   public boolean setDate(Date aDate)
   {
     boolean wasSet = false;
-    date = aDate;
+    eventDate = aDate;
     wasSet = true;
     return wasSet;
   }
@@ -74,7 +74,7 @@ public class Event
 
   public Date getDate()
   {
-    return date;
+    return eventDate;
   }
 
   public Time getStartTime()
