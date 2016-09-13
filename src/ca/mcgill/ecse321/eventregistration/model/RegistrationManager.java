@@ -2,9 +2,9 @@
 /*This code was generated using the UMPLE 1.20.1.4071 modeling language!*/
 
 package ca.mcgill.ecse321.eventregistration.model;
-import java.util.*;
-import java.sql.Date;
-import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 // line 20 "../../../../../EventRegistration.ump"
 public class RegistrationManager
