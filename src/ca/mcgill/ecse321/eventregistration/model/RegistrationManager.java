@@ -7,14 +7,14 @@ import java.sql.Date;
 import java.sql.Time;
 
 // line 20 "../../../../../EventRegistration.ump"
-public class RegistrationManage
+public class RegistrationManager
 {
 
   //------------------------
   // STATIC VARIABLES
   //------------------------
 
-  private static RegistrationManage theInstance = null;
+  private static RegistrationManager theInstance = null;
 
   //------------------------
   // MEMBER VARIABLES
@@ -29,18 +29,18 @@ public class RegistrationManage
   // CONSTRUCTOR
   //------------------------
 
-  private RegistrationManage()
+  private RegistrationManager()
   {
     events = new ArrayList<Event>();
     participants = new ArrayList<Participant>();
     registrations = new ArrayList<Registration>();
   }
 
-  public static RegistrationManage getInstance()
+  public static RegistrationManager getInstance()
   {
     if(theInstance == null)
     {
-      theInstance = new RegistrationManage();
+      theInstance = new RegistrationManager();
     }
     return theInstance;
   }

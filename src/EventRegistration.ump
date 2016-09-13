@@ -17,7 +17,7 @@ class Registration {
 	* -> 1 Event event;
 }
 
-class RegistrationManage {
+class RegistrationManager {
 	singleton;
 	1 -> * Event events;
 	1 -> * Participant participants;
