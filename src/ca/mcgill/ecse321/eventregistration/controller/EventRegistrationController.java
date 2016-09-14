@@ -32,6 +32,22 @@ public class EventRegistrationController {
 			throw new InvalidInputException("Event name cannot be empty.");
 		}
 		
+		if(eventDate == null) {
+			throw new InvalidInputException("Event date cannot be empty.");
+		}
+		
+		if(startTime == null)  {
+			throw new InvalidInputException("Event start time cannot be empty.");
+		}
+		
+		if(endTime == null)  {
+			throw new InvalidInputException("Event end time cannot be empty.");
+		}
+		
+		if(startTime.compareTo(endTime) > 0) {
+			throw new InvalidInputException("Event cannot end before it starts!");
+		}
+		
 		Event e = new Event(name, eventDate, startTime, endTime);	//create participant
 		RegistrationManager rm = RegistrationManager.getInstance();	//get registration manager
 		rm.addEvent(e);	//add event to registration manager
@@ -39,6 +55,15 @@ public class EventRegistrationController {
 	}
 
 	public void createRegistration(Participant p, Event e) throws InvalidInputException {
+		
+		//checking for invalid input
+		if(p == null) {
+			throw new InvalidInputException("A registration must include a participant!");
+		}
+		
+		if (e == null) {
+			throw new InvalidInputException("A registration must include an event!");
+		}
 		Registration reg = new Registration(p, e);	//create participant
 		RegistrationManager rm = RegistrationManager.getInstance();	//get registration manager
 		rm.addRegistration(reg);	//add it to registration manager
